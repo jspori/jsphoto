@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JS Photo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #2a2a2a;
+      --gray: #888;
+      --light: #f9f9f9;
+      --white: #ffffff;
+      --font-display: 'Playfair Display', serif;
+      --font-body: 'Playfair Display', serif;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font-body);
+      color: var(--black);
+      background: var(--white);
+    }
+
+    /* ── PAGES ── */
+    .page {
+      display: none;
+      min-height: 100vh;
+      animation: fadeIn 0.4s ease;
+    }
+    .page.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── WELCOME PAGE ── */
+    #page-welcome {
+      display: none;
+      min-height: 100vh;
+    }
+    #page-welcome.active {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .welcome-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem 2.5rem;
+      position: relative;
+    }
+
+    .welcome-logo {
+      position: absolute;
+      top: 2rem;
+      left: 2.5rem;
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+
+    .welcome-footer {
+      position: absolute;
+      bottom: 2rem;
+      left: 2.5rem;
+    }
+
+    .welcome-content {
+      padding-bottom: 0;
+    }
+
+    .welcome-content h1 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(3rem, 6vw, 5rem);
+      line-height: 1;
+      margin-bottom: 0.6rem;
+      color: var(--black);
+    }
+
+    .welcome-content p {
+      font-size: 0.95rem;
+      color: var(--gray);
+      margin-bottom: 2rem;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-enter {
+      display: inline-block;
+      border: 1.5px solid var(--black);
+      padding: 0.7rem 1.8rem;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+    .btn-enter:hover {
+      background: var(--black);
+      color: var(--white);
+    }
+
+    .welcome-right {
+      position: relative;
+      overflow: hidden;
+    }
+    .welcome-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      min-height: 100vh;
+    }
+
+    /* ── INNER PAGES (portfolio, about, contact) ── */
+    .inner-header {
+      text-align: center;
+      padding: 2rem 1rem 0;
+    }
+
+    .inner-logo {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--black);
+      margin-bottom: 0.6rem;
+      display: block;
+      cursor: pointer;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      margin-bottom: 0;
+    }
+
+    nav a {
+      color: var(--gray);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding-bottom: 2px;
+    }
+    nav a:hover { color: var(--black); }
+    nav a.active {
+      color: var(--black);
+      font-weight: 700;
+    }
+
+    /* ── PORTFOLIO ── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      margin: 2.5rem auto 0;
+      max-width: 900px;
+      padding: 0 1rem;
+    }
+
+    .portfolio-grid img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      transition: opacity 0.3s;
+    }
+    .portfolio-grid img:hover { opacity: 0.88; }
+
+    /* placeholder tiles when no real photos */
+    .photo-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── ABOUT ── */
+    .about-inner {
+      max-width: 900px;
+      margin: 2.5rem auto 4rem;
+      padding: 0 1rem;
+    }
+
+    .about-hero {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+      margin-bottom: 1.5rem;
+      filter: grayscale(100%);
+    }
+
+    .about-hero-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-inner h2 {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .about-inner p {
+      font-size: 0.9rem;
+      color: var(--gray);
+      font-weight: 300;
+    }
+
+    /* ── CONTACT ── */
+    .contact-inner {
+      max-width: 900px;
+      margin: 3rem auto 4rem;
+      padding: 0 1rem;
+    }
+
+    .contact-inner h2 {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .contact-inner a {
+      font-size: 0.9rem;
+      color: var(--gray);
+      font-weight: 300;
+      text-decoration: none;
+    }
+    .contact-inner a:hover { color: var(--black); }
+
+    .contact-instagram {
+      margin-top: 3rem;
+    }
+
+    .instagram-icon {
+      display: inline-block;
+      cursor: pointer;
+    }
+    .instagram-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: var(--black);
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: opacity 0.2s;
+    }
+    .instagram-icon:hover svg { opacity: 0.5; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      #page-welcome.active {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 50vw;
+      }
+      .welcome-right img { min-height: unset; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WELCOME PAGE -->
+  <div id="page-welcome" class="page active">
+    <div class="welcome-left">
+      <div class="welcome-logo">JS Photo</div>
+      <div class="welcome-content">
+        <h1>welcome</h1>
+        <p>to nature</p>
+        <a class="btn-enter" onclick="goTo('portfolio')">ENTER</a>
+      </div>
+      <div class="welcome-footer">
+        <a class="instagram-icon" href="https://instagram.com" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="welcome-right">
+      <!-- Replace src with your own hero image path, e.g. images/hero.jpg -->
+      <img src="pictures/taube.jpg" alt="Taube" />
+    </div>
+  </div>
+
+  <!-- PORTFOLIO PAGE -->
+  <div id="page-portfolio" class="page">
+    <div class="inner-header">
+      <span class="inner-logo" onclick="goTo('welcome')">JS photo</span>
+      <nav>
+        <a onclick="goTo('welcome')">welcome</a>
+        <a onclick="goTo('portfolio')" class="active" id="nav-portfolio">portfolio</a>
+        <a onclick="goTo('about')" id="nav-about">about</a>
+        <a onclick="goTo('contact')" id="nav-contact">contact</a>
+      </nav>
+    </div>
+    <div class="portfolio-grid" id="portfolio-grid">
+      <img src="pictures/amsel.jpg" alt="Amsel" />
+      <img src="pictures/bachstelze.jpg" alt="Bachstelze" />
+      <img src="pictures/bauchlandung.jpg" alt="Bauchlandung" />
+      <img src="pictures/chamois.jpg" alt="Chamois" />
+      <img src="pictures/chamois2.jpg" alt="Chamois 2" />
+      <img src="pictures/enteSonnenuntergang.jpg" alt="Ente Sonnenuntergang" />
+      <img src="pictures/fuchsPortrait.jpg" alt="Fuchs Portrait" />
+      <img src="pictures/gelbmeise.jpg" alt="Gelbmeise" />
+      <img src="pictures/graureiher.jpg" alt="Graureiher" />
+      <img src="pictures/graureiherGras.jpg" alt="Graureiher im Gras" />
+      <img src="pictures/kingfisher.jpg" alt="Kingfisher" />
+      <img src="pictures/reh.jpg" alt="Reh" />
+      <img src="pictures/roterWald.jpg" alt="Roter Wald" />
+      <img src="pictures/schneeberge.jpg" alt="Schneeberge" />
+      <img src="pictures/schwarzeEnten.jpg" alt="Schwarze Enten" />
+      <img src="pictures/taube.jpg" alt="Taube" />
+      <img src="pictures/taubenhaucher.jpg" alt="Taubenhaucher" />
+      <img src="pictures/wasserfall.jpg" alt="Wasserfall" />
+    </div>
+  </div>
+
+  <!-- ABOUT PAGE -->
+  <div id="page-about" class="page">
+    <div class="inner-header">
+      <span class="inner-logo" onclick="goTo('welcome')">JS photo</span>
+      <nav>
+        <a onclick="goTo('welcome')">welcome</a>
+        <a onclick="goTo('portfolio')">portfolio</a>
+        <a onclick="goTo('about')" class="active">about</a>
+        <a onclick="goTo('contact')">contact</a>
+      </nav>
+    </div>
+    <div class="about-inner">
+      <!--
+        Ersetze den Platzhalter durch dein eigenes Bild, z.B.:
+        <img class="about-hero" src="images/about.jpg" alt="Joel Spori" />
+      -->
+      <div class="about-hero-placeholder">Dein Foto hier (about-Bild)</div>
+      <h2>Joel Spori</h2>
+      <p>passionate about nature and its inhabitants.</p>
+    </div>
+  </div>
+
+  <!-- CONTACT PAGE -->
+  <div id="page-contact" class="page">
+    <div class="inner-header">
+      <span class="inner-logo" onclick="goTo('welcome')">JS photo</span>
+      <nav>
+        <a onclick="goTo('welcome')">welcome</a>
+        <a onclick="goTo('portfolio')">portfolio</a>
+        <a onclick="goTo('about')">about</a>
+        <a onclick="goTo('contact')" class="active">contact</a>
+      </nav>
+    </div>
+    <div class="contact-inner">
+      <h2>Write to:</h2>
+      <span style="font-size:0.9rem; color:var(--gray); font-weight:300;">joel.spori gmail com</span>
+      <div class="contact-instagram">
+        <a class="instagram-icon" href="https://instagram.com" target="_blank" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goTo(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+  </script>
+</body>
+</html>
