@@ -135,7 +135,7 @@
       padding-bottom: 2px;
     }
     nav a:hover { color: var(--black); border-bottom: 1px solid var(--black); padding-bottom: 3px; }
-    nav a.active { color: var(--black); font-weight: 700; border-bottom: 1px solid var(--black); padding-bottom: 3px; }
+    nav a.active { color: var(--black); font-weight: 700; border-bottom: 1px solid var(--black); padding-bottom: 3px; text-decoration: none; }
 
     /* ── PORTFOLIO SLIDER ── */
     .portfolio-slider-wrap {
@@ -334,7 +334,7 @@
 
   <!-- WELCOME PAGE -->
   <div id="page-welcome" class="page active">
-    <span class="welcome-logo" style="font-family: var(--font-serif); font-size: 3rem; font-weight: 300; color: #000000; position: absolute; top: 2rem; left: 2rem;">JS</span>
+    <img class="welcome-logo" src="pictures/monogram.png" alt="JS Photo" style="height:200px; width:auto; position: absolute; top: 2rem; left: 2rem;" />
     <div class="welcome-left">
       <div class="welcome-content">
         <h1>Welcome, to my world</h1>
@@ -347,7 +347,7 @@
   <div id="page-portfolio" class="page">
     <div class="inner-page-bg">
       <div class="inner-header">
-        <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
+        <img class="inner-logo" src="pictures/monogram.png" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
         <nav>
           <a onclick="goTo('portfolio')" class="active">PORTFOLIO</a>
           <a onclick="goTo('contact')">CONTACT</a>
@@ -373,6 +373,7 @@
           <div class="slide"><img src="pictures/taubenhaucher.jpg" alt="Taubenhaucher" /><div class="slide-overlay"><span></span></div></div>
           <div class="slide"><img src="pictures/reh.jpg" alt="Reh" /><div class="slide-overlay"><span>Capreolus capreolus</span></div></div>
           <div class="slide"><img src="pictures/schwarzeEnten.jpg" alt="Schwarze Enten" /><div class="slide-overlay"><span>Aythya fuligula</span></div></div>
+          <div class="slide"><img src="pictures/alpstein.jpg" alt="Alpstein" /><div class="slide-overlay"><span>Canton of Appenzell Innerrhoden</span></div></div>
           <div class="slide"><img src="pictures/taube.jpg" alt="Taube" /><div class="slide-overlay"><span>Columbidae</span></div></div>
         </div>
         <div class="slider-controls">
@@ -387,7 +388,7 @@
   <div id="page-about" class="page">
     <div class="inner-page-bg">
       <div class="inner-header">
-        <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
+        <img class="inner-logo" src="pictures/monogram.png" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
         <nav>
           <a onclick="goTo('portfolio')">PORTFOLIO</a>
           <a onclick="goTo('contact')">CONTACT</a>
@@ -406,7 +407,7 @@
   <div id="page-contact" class="page">
     <div class="inner-page-bg">
       <div class="inner-header">
-        <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
+        <img class="inner-logo" src="pictures/monogram.png" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
         <nav>
           <a onclick="goTo('portfolio')">PORTFOLIO</a>
           <a onclick="goTo('contact')" class="active">CONTACT</a>
