@@ -14,6 +14,7 @@
       --black: #2a2a2a;
       --gray: #888;
       --white: #ffffff;
+      --bg: #ecf8fe;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
@@ -23,7 +24,6 @@
       font-family: var(--font-sans);
       color: var(--black);
       background: var(--white);
-      overflow-y: scroll;
     }
 
     .page {
@@ -94,21 +94,25 @@
       transition: background 0.2s;
       text-decoration: none;
     }
-    .btn-enter:hover {
-      background: #2a3d5a;
-      color: var(--white);
-    }
+    .btn-enter:hover { background: #2a3d5a; color: var(--white); }
 
     /* ── INNER PAGES ── */
+    .inner-page-bg {
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
     .inner-header {
       text-align: center;
       padding: 2rem 1rem 0;
+      background: var(--bg);
     }
 
     .inner-logo {
       display: block;
       margin: 0 auto 1.4rem;
       cursor: pointer;
+      mix-blend-mode: multiply;
     }
 
     nav {
@@ -129,31 +133,86 @@
       transition: color 0.2s;
       padding-bottom: 2px;
     }
-    nav a:hover { color: var(--black); text-decoration: underline; text-underline-offset: 5px; }
-    nav a.active {
-      color: var(--black);
-      font-weight: 700;
+    nav a:hover { color: var(--black); border-bottom: 1px solid var(--black); padding-bottom: 3px; }
+    nav a.active { color: var(--black); font-weight: 700; border-bottom: 1px solid var(--black); padding-bottom: 3px; }
+
+    /* ── PORTFOLIO SLIDER ── */
+    .portfolio-slider-wrap {
+      background: var(--bg);
+      padding: 2.5rem 0 0;
+      position: relative;
     }
 
-    /* ── PORTFOLIO ── */
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 2px;
-      margin: 3rem auto 0;
-      max-width: 1100px;
-      padding: 0 1rem;
+    .portfolio-slider {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 0 2rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .portfolio-slider::-webkit-scrollbar { display: none; }
+
+    /* wrapper per foto */
+    .slide {
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+      cursor: zoom-in;
     }
 
-    .portfolio-grid img {
-      width: 100%;
-      aspect-ratio: 4/3;
+    .slide img {
+      height: 380px;
+      width: auto;
       object-fit: cover;
       display: block;
       transition: opacity 0.3s;
-      cursor: zoom-in;
     }
-    .portfolio-grid img:hover { opacity: 0.88; }
+    .slide:hover img { opacity: 0.88; }
+
+    .slide-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 55%, rgba(0,0,0,0.52));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: 0.9rem 1rem;
+      pointer-events: none;
+    }
+    .slide:hover .slide-overlay { opacity: 1; }
+
+    .slide-overlay span {
+      color: white;
+      font-family: var(--font-sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .slider-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      padding: 1.5rem 0 2.5rem;
+    }
+
+    .slider-btn {
+      background: none;
+      border: none;
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--black);
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+      line-height: 1;
+    }
+    .slider-btn:hover { opacity: 1; }
 
     /* ── ABOUT ── */
     .about-inner {
@@ -250,8 +309,6 @@
       line-height: 1;
       opacity: 0.7;
       transition: opacity 0.2s;
-      font-family: var(--font-sans);
-      font-weight: 300;
     }
     .lightbox-close:hover { opacity: 1; }
 
@@ -266,105 +323,99 @@
       transition: opacity 0.2s;
       padding: 1rem;
       user-select: none;
-      font-family: var(--font-sans);
-      font-weight: 300;
     }
     .lightbox-prev { left: 1rem; }
     .lightbox-next { right: 1rem; }
     .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .portfolio-grid { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 680px) {
-      #page-welcome.active {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 110vw;
-      }
-      .welcome-right img { min-height: unset; }
-      .portfolio-grid { grid-template-columns: 1fr; }
-    }
   </style>
 </head>
 <body>
 
   <!-- WELCOME PAGE -->
-<div id="page-welcome" class="page active">
-  <img class="welcome-logo" src="pictures/monogram.jpg" alt="JS Photo" style="height:100px; width:auto; mix-blend-mode: multiply;"" />
-  <div class="welcome-left">
-    <div class="welcome-content">
-      <h1>Welcome, to my world</h1>
-      <a class="btn-enter" onclick="goTo('portfolio')">Enter</a>
+  <div id="page-welcome" class="page active">
+    <span class="welcome-logo" style="font-family: var(--font-serif); font-size: 3rem; font-weight: 300; color: #000000; position: absolute; top: 2rem; left: 2rem;">JS</span>
+    <div class="welcome-left">
+      <div class="welcome-content">
+        <h1>Welcome, to my world</h1>
+        <a class="btn-enter" onclick="goTo('portfolio')">Enter</a>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- PORTFOLIO PAGE -->
   <div id="page-portfolio" class="page">
-    <div class="inner-header">
-      <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
-      <nav>
-        <a onclick="goTo('welcome')">WELCOME</a>
-        <a onclick="goTo('portfolio')" class="active" id="nav-portfolio">PORTFOLIO</a>
-        <a onclick="goTo('about')" id="nav-about">ABOUT</a>
-        <a onclick="goTo('contact')" id="nav-contact">CONTACT</a>
-      </nav>
-    </div>
-    <div class="portfolio-grid" id="portfolio-grid">
-      <img src="pictures/chamois.jpg" alt="Chamois" />
-      <img src="pictures/bauchlandung.jpg" alt="Bauchlandung" />
-      <img src="pictures/wasserfall.jpg" alt="Wasserfall" />
-      <img src="pictures/bachstelze.jpg" alt="Bachstelze" />
-      <img src="pictures/chamois2.jpg" alt="Chamois 2" />
-      <img src="pictures/enteSonnenuntergang.jpg" alt="Ente Sonnenuntergang" />
-      <img src="pictures/fuchsPortrait.jpg" alt="Fuchs Portrait" />
-      <img src="pictures/gelbmeise.jpg" alt="Gelbmeise" />
-      <img src="pictures/graureiher.jpg" alt="Graureiher" />
-      <img src="pictures/amsel.jpg" alt="Amsel" />
-      <img src="pictures/schneeberge.jpg" alt="Schneeberge" />
-      <img src="pictures/graureiherGras.jpg" alt="Graureiher im Gras" />
-      <img src="pictures/kingfisher.jpg" alt="Kingfisher" />
-      <img src="pictures/roterWald.jpg" alt="Roter Wald" />
-      <img src="pictures/taubenhaucher.jpg" alt="Taubenhaucher" />
-      <img src="pictures/reh.jpg" alt="Reh" />
-      <img src="pictures/schwarzeEnten.jpg" alt="Schwarze Enten" />
-      <img src="pictures/taube.jpg" alt="Taube" />
+    <div class="inner-page-bg">
+      <div class="inner-header">
+        <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
+        <nav>
+          <a onclick="goTo('portfolio')" class="active">PORTFOLIO</a>
+          <a onclick="goTo('contact')">CONTACT</a>
+          <a onclick="goTo('about')">ABOUT</a>
+        </nav>
+      </div>
+      <div class="portfolio-slider-wrap">
+        <div class="portfolio-slider" id="portfolio-slider">
+          <div class="slide"><img src="pictures/chamois.jpg" alt="Chamois" /><div class="slide-overlay"><span>Rupicapra rupicapra</span></div></div>
+          <div class="slide"><img src="pictures/bauchlandung.jpg" alt="Bauchlandung" /><div class="slide-overlay"><span>Podiceps cristatus</span></div></div>
+          <div class="slide"><img src="pictures/wasserfall.jpg" alt="Wasserfall" /><div class="slide-overlay"><span>Canton of Glarus</span></div></div>
+          <div class="slide"><img src="pictures/bachstelze.jpg" alt="Bachstelze" /><div class="slide-overlay"><span>Motacilla alba</span></div></div>
+          <div class="slide"><img src="pictures/chamois2.jpg" alt="Chamois 2" /><div class="slide-overlay"><span>Rupicapra rupicapra</span></div></div>
+          <div class="slide"><img src="pictures/enteSonnenuntergang.jpg" alt="Ente Sonnenuntergang" /><div class="slide-overlay"><span>Anas platyrhynchos</span></div></div>
+          <div class="slide"><img src="pictures/fuchsPortrait.jpg" alt="Fuchs Portrait" /><div class="slide-overlay"><span>Canis vulpes</span></div></div>
+          <div class="slide"><img src="pictures/gelbmeise.jpg" alt="Gelbmeise" /><div class="slide-overlay"><span>Paridae</span></div></div>
+          <div class="slide"><img src="pictures/graureiher.jpg" alt="Graureiher" /><div class="slide-overlay"><span>Ardea cinerea</span></div></div>
+          <div class="slide"><img src="pictures/amsel.jpg" alt="Amsel" /><div class="slide-overlay"><span>Turdus merula</span></div></div>
+          <div class="slide"><img src="pictures/schneeberge.jpg" alt="Schneeberge" /><div class="slide-overlay"><span>Canton of Glarus</span></div></div>
+          <div class="slide"><img src="pictures/graureiherGras.jpg" alt="Graureiher im Gras" /><div class="slide-overlay"><span>Ardea cinerea</span></div></div>
+          <div class="slide"><img src="pictures/kingfisher.jpg" alt="Kingfisher" /><div class="slide-overlay"><span>Alcedinidae</span></div></div>
+          <div class="slide"><img src="pictures/roterWald.jpg" alt="Roter Wald" /><div class="slide-overlay"><span>Vosges</span></div></div>
+          <div class="slide"><img src="pictures/taubenhaucher.jpg" alt="Taubenhaucher" /><div class="slide-overlay"><span></span></div></div>
+          <div class="slide"><img src="pictures/reh.jpg" alt="Reh" /><div class="slide-overlay"><span>Capreolus capreolus</span></div></div>
+          <div class="slide"><img src="pictures/schwarzeEnten.jpg" alt="Schwarze Enten" /><div class="slide-overlay"><span>Aythya fuligula</span></div></div>
+          <div class="slide"><img src="pictures/taube.jpg" alt="Taube" /><div class="slide-overlay"><span>Columbidae</span></div></div>
+        </div>
+        <div class="slider-controls">
+          <button class="slider-btn" id="slider-prev">&#8249;</button>
+          <button class="slider-btn" id="slider-next">&#8250;</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <!-- ABOUT PAGE -->
   <div id="page-about" class="page">
-    <div class="inner-header">
-      <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
-      <nav>
-        <a onclick="goTo('welcome')">WELCOME</a>
-        <a onclick="goTo('portfolio')">PORTFOLIO</a>
-        <a onclick="goTo('about')" class="active">ABOUT</a>
-        <a onclick="goTo('contact')">CONTACT</a>
-      </nav>
-    </div>
-    <div class="about-inner">
-      <img class="about-hero" src="pictures/aboutMe.jpg" alt="Joel Spori" />
-      <h2>Joel Spori</h2>
-      <p>Passionate about nature and its inhabitants.</p>
+    <div class="inner-page-bg">
+      <div class="inner-header">
+        <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
+        <nav>
+          <a onclick="goTo('portfolio')">PORTFOLIO</a>
+          <a onclick="goTo('contact')">CONTACT</a>
+          <a onclick="goTo('about')" class="active">ABOUT</a>
+        </nav>
+      </div>
+      <div class="about-inner">
+        <img class="about-hero" src="pictures/aboutMe.jpg" alt="Joel Spori" />
+        <h2>Joel Spori</h2>
+        <p>Passionate about nature and its inhabitants.</p>
+      </div>
     </div>
   </div>
 
   <!-- CONTACT PAGE -->
   <div id="page-contact" class="page">
-    <div class="inner-header">
-      <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
-      <nav>
-        <a onclick="goTo('welcome')">WELCOME</a>
-        <a onclick="goTo('portfolio')">PORTFOLIO</a>
-        <a onclick="goTo('about')">ABOUT</a>
-        <a onclick="goTo('contact')" class="active">CONTACT</a>
-      </nav>
-    </div>
-    <div class="contact-inner">
-      <h2>Write to</h2>
-      <span>joel.spori gmail com</span>
+    <div class="inner-page-bg">
+      <div class="inner-header">
+        <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
+        <nav>
+          <a onclick="goTo('portfolio')">PORTFOLIO</a>
+          <a onclick="goTo('contact')" class="active">CONTACT</a>
+          <a onclick="goTo('about')">ABOUT</a>
+        </nav>
+      </div>
+      <div class="contact-inner">
+        <h2>Write to</h2>
+        <span>joel.spori gmail com</span>
+      </div>
     </div>
   </div>
 
@@ -377,21 +428,39 @@
   </div>
 
   <script>
-    function goTo(page) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-' + page).classList.add('active');
-      window.scrollTo(0, 0);
-    }
+  function goTo(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('nav a').forEach(a => a.style.textDecoration = 'none');
+    document.querySelectorAll('nav a.active').forEach(a => {
+      a.style.textDecoration = 'underline';
+      a.style.textUnderlineOffset = '5px';
+    });
+    window.scrollTo(0, 0);
+  }
+
+document.querySelectorAll('nav a.active').forEach(a => {
+  a.style.textDecoration = 'underline';
+  a.style.textUnderlineOffset = '5px';
+});
+
+    const slider = document.getElementById('portfolio-slider');
+    document.getElementById('slider-prev').addEventListener('click', () => {
+      slider.scrollBy({ left: -500, behavior: 'smooth' });
+    });
+    document.getElementById('slider-next').addEventListener('click', () => {
+      slider.scrollBy({ left: 500, behavior: 'smooth' });
+    });
 
     let currentIndex = 0;
     let photos = [];
 
-    document.querySelectorAll('.portfolio-grid img').forEach((img, i) => {
-      img.addEventListener('click', () => openLightbox(i));
+    document.querySelectorAll('.slide').forEach((slide, i) => {
+      slide.addEventListener('click', () => openLightbox(i));
     });
 
     function openLightbox(index) {
-      photos = Array.from(document.querySelectorAll('.portfolio-grid img'));
+      photos = Array.from(document.querySelectorAll('.slide img'));
       currentIndex = index;
       document.getElementById('lightbox-img').src = photos[currentIndex].src;
       document.getElementById('lightbox').classList.add('open');
