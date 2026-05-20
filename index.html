@@ -6,27 +6,26 @@
   <title>JS Photo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --black: #2a2a2a;
       --gray: #888;
-      --light: #f9f9f9;
       --white: #ffffff;
-      --font-display: 'Playfair Display', serif;
-      --font-body: 'Playfair Display', serif;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     }
 
     html, body {
       height: 100%;
-      font-family: var(--font-body);
+      font-family: var(--font-sans);
       color: var(--black);
       background: var(--white);
+      overflow-y: scroll;
     }
 
-    /* ── PAGES ── */
     .page {
       display: none;
       min-height: 100vh;
@@ -63,47 +62,36 @@
       position: absolute;
       top: 2rem;
       left: 2.5rem;
-      font-family: var(--font-body);
-      font-weight: 400;
-      font-size: 0.8rem;
-      letter-spacing: 0.15em;
-      color: var(--black);
-    }
-
-    .welcome-footer {
-      position: absolute;
-      bottom: 2rem;
-      left: 2.5rem;
-    }
-
-    .welcome-content {
-      padding-bottom: 0;
     }
 
     .welcome-content h1 {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: clamp(2rem, 1vw, 3rem);
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-size: clamp(3rem, 5vw, 5rem);
       line-height: 1;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
       color: var(--black);
+      letter-spacing: 0.1em;
     }
 
     .welcome-content p {
-      font-size: 0.95rem;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.2rem;
       color: var(--gray);
-      margin-bottom: 1.2rem;
+      margin-bottom: 2rem;
       font-weight: 300;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.04em;
     }
 
     .btn-enter {
       display: inline-block;
-      border: 1.5px solid var(--black);
-      padding: 0.7rem 1.8rem;
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
+      border: 1px solid var(--black);
+      padding: 0.7rem 2rem;
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       color: var(--black);
       background: transparent;
       cursor: pointer;
@@ -128,19 +116,15 @@
       min-height: 100vh;
     }
 
-    /* ── INNER PAGES (portfolio, about, contact) ── */
+    /* ── INNER PAGES ── */
     .inner-header {
       text-align: center;
       padding: 2rem 1rem 0;
     }
 
     .inner-logo {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1.8rem;
-      color: var(--black);
-      margin-bottom: 2rem;
       display: block;
+      margin: 0 auto 1.4rem;
       cursor: pointer;
     }
 
@@ -148,10 +132,11 @@
       display: flex;
       justify-content: center;
       gap: 2rem;
-      font-size: 0.85rem;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
       font-weight: 400;
-      letter-spacing: 0.02em;
-      margin-bottom: 0;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
     }
 
     nav a {
@@ -161,7 +146,7 @@
       transition: color 0.2s;
       padding-bottom: 2px;
     }
-    nav a:hover { color: var(--black); }
+    nav a:hover { color: var(--black); text-decoration: underline; text-underline-offset: 5px; }
     nav a.active {
       color: var(--black);
       font-weight: 700;
@@ -170,10 +155,10 @@
     /* ── PORTFOLIO ── */
     .portfolio-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 2px;
       margin: 3rem auto 0;
-      max-width: 900px;
+      max-width: 1100px;
       padding: 0 1rem;
     }
 
@@ -183,21 +168,9 @@
       object-fit: cover;
       display: block;
       transition: opacity 0.3s;
+      cursor: zoom-in;
     }
     .portfolio-grid img:hover { opacity: 0.88; }
-
-    /* placeholder tiles when no real photos */
-    .photo-placeholder {
-      width: 100%;
-      aspect-ratio: 4/3;
-      background: #ddd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #aaa;
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-    }
 
     /* ── ABOUT ── */
     .about-inner {
@@ -211,34 +184,27 @@
       aspect-ratio: 16/9;
       object-fit: cover;
       display: block;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       filter: grayscale(100%);
     }
 
-    .about-hero-placeholder {
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #999;
-      font-size: 0.85rem;
-      letter-spacing: 0.05em;
-      margin-bottom: 1.5rem;
-    }
-
     .about-inner h2 {
-      font-family: var(--font-display);
-      font-weight: 700;
-      font-size: 1.3rem;
-      margin-bottom: 0.4rem;
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-size: 2.5rem;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.6rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #e0e0e0;
     }
 
     .about-inner p {
-      font-size: 0.9rem;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
       color: var(--gray);
       font-weight: 300;
+      letter-spacing: 0.12em;
+      margin-top: 1rem;
     }
 
     /* ── CONTACT ── */
@@ -249,38 +215,22 @@
     }
 
     .contact-inner h2 {
-      font-weight: 700;
-      font-size: 0.9rem;
-      margin-bottom: 0.8rem;
+      font-family: var(--font-serif);
+      font-weight: 300;
+      font-size: 2.5rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid #e0e0e0;
     }
 
-    .contact-inner a {
-      font-size: 0.9rem;
+    .contact-inner span {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
       color: var(--gray);
       font-weight: 300;
-      text-decoration: none;
+      letter-spacing: 0.08em;
     }
-    .contact-inner a:hover { color: var(--black); }
-
-    .contact-instagram {
-      margin-top: 3rem;
-    }
-
-    .instagram-icon {
-      display: inline-block;
-      cursor: pointer;
-    }
-    .instagram-icon svg {
-      width: 22px;
-      height: 22px;
-      fill: none;
-      stroke: var(--black);
-      stroke-width: 1.8;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: opacity 0.2s;
-    }
-    .instagram-icon:hover svg { opacity: 0.5; }
 
     /* ── LIGHTBOX ── */
     .lightbox {
@@ -296,10 +246,9 @@
     .lightbox.open { display: flex; }
 
     .lightbox img {
-      max-width: 92vw;
-      max-height: 92vh;
+      max-width: 98vw;
+      max-height: 98vh;
       object-fit: contain;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
       cursor: default;
       animation: lbIn 0.25s ease;
     }
@@ -318,7 +267,7 @@
       line-height: 1;
       opacity: 0.7;
       transition: opacity 0.2s;
-      font-family: var(--font-body);
+      font-family: var(--font-sans);
       font-weight: 300;
     }
     .lightbox-close:hover { opacity: 1; }
@@ -334,16 +283,17 @@
       transition: opacity 0.2s;
       padding: 1rem;
       user-select: none;
-      font-family: var(--font-body);
+      font-family: var(--font-sans);
       font-weight: 300;
     }
     .lightbox-prev { left: 1rem; }
     .lightbox-next { right: 1rem; }
     .lightbox-prev:hover, .lightbox-next:hover { opacity: 1; }
 
-    .portfolio-grid img { cursor: zoom-in; }
-
     /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .portfolio-grid { grid-template-columns: 1fr 1fr; }
+    }
     @media (max-width: 680px) {
       #page-welcome.active {
         grid-template-columns: 1fr;
@@ -359,7 +309,7 @@
   <!-- WELCOME PAGE -->
   <div id="page-welcome" class="page active">
     <div class="welcome-left">
-      <div class="welcome-logo">JS Photo</div>
+      <img class="welcome-logo" src="pictures/monogram.jpg" alt="JS Photo" style="height:100px; width:auto;" />
       <div class="welcome-content">
         <h1>welcome</h1>
         <p>to nature</p>
@@ -367,7 +317,6 @@
       </div>
     </div>
     <div class="welcome-right">
-      <!-- Replace src with your own hero image path, e.g. images/hero.jpg -->
       <img src="pictures/taube.jpg" alt="Taube" />
     </div>
   </div>
@@ -375,12 +324,12 @@
   <!-- PORTFOLIO PAGE -->
   <div id="page-portfolio" class="page">
     <div class="inner-header">
-      <span class="inner-logo" onclick="goTo('welcome')">JS photo</span>
+      <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
       <nav>
-        <a onclick="goTo('welcome')">welcome</a>
-        <a onclick="goTo('portfolio')" class="active" id="nav-portfolio">portfolio</a>
-        <a onclick="goTo('about')" id="nav-about">about</a>
-        <a onclick="goTo('contact')" id="nav-contact">contact</a>
+        <a onclick="goTo('welcome')">WELCOME</a>
+        <a onclick="goTo('portfolio')" class="active" id="nav-portfolio">PORTFOLIO</a>
+        <a onclick="goTo('about')" id="nav-about">ABOUT</a>
+        <a onclick="goTo('contact')" id="nav-contact">CONTACT</a>
       </nav>
     </div>
     <div class="portfolio-grid" id="portfolio-grid">
@@ -402,47 +351,42 @@
       <img src="pictures/reh.jpg" alt="Reh" />
       <img src="pictures/schwarzeEnten.jpg" alt="Schwarze Enten" />
       <img src="pictures/taube.jpg" alt="Taube" />
-
     </div>
   </div>
 
   <!-- ABOUT PAGE -->
   <div id="page-about" class="page">
     <div class="inner-header">
-      <span class="inner-logo" onclick="goTo('welcome')">JS photo</span>
+      <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
       <nav>
-        <a onclick="goTo('welcome')">welcome</a>
-        <a onclick="goTo('portfolio')">portfolio</a>
-        <a onclick="goTo('about')" class="active">about</a>
-        <a onclick="goTo('contact')">contact</a>
+        <a onclick="goTo('welcome')">WELCOME</a>
+        <a onclick="goTo('portfolio')">PORTFOLIO</a>
+        <a onclick="goTo('about')" class="active">ABOUT</a>
+        <a onclick="goTo('contact')">CONTACT</a>
       </nav>
     </div>
     <div class="about-inner">
-      <!--
-        Ersetze den Platzhalter durch dein eigenes Bild, z.B.:
-        <img class="about-hero" src="images/about.jpg" alt="Joel Spori" />
-      -->
       <img class="about-hero" src="pictures/aboutMe.jpg" alt="Joel Spori" />
       <h2>Joel Spori</h2>
-      <p>passionate about nature and its inhabitants.</p>
+      <p>Passionate about nature and its inhabitants.</p>
     </div>
   </div>
 
   <!-- CONTACT PAGE -->
   <div id="page-contact" class="page">
     <div class="inner-header">
-      <span class="inner-logo" onclick="goTo('welcome')">JS photo</span>
+      <img class="inner-logo" src="pictures/monogram.jpg" alt="JS Photo" onclick="goTo('welcome')" style="height:100px; width:auto;" />
       <nav>
-        <a onclick="goTo('welcome')">welcome</a>
-        <a onclick="goTo('portfolio')">portfolio</a>
-        <a onclick="goTo('about')">about</a>
-        <a onclick="goTo('contact')" class="active">contact</a>
+        <a onclick="goTo('welcome')">WELCOME</a>
+        <a onclick="goTo('portfolio')">PORTFOLIO</a>
+        <a onclick="goTo('about')">ABOUT</a>
+        <a onclick="goTo('contact')" class="active">CONTACT</a>
       </nav>
     </div>
     <div class="contact-inner">
-      <h2>write to:</h2>
-      <span style="font-size:0.9rem; color:var(--gray); font-weight:300;">joel.spori gmail com</span>
-          </div>
+      <h2>Write to</h2>
+      <span>joel.spori gmail com</span>
+    </div>
   </div>
 
   <!-- LIGHTBOX -->
@@ -460,7 +404,6 @@
       window.scrollTo(0, 0);
     }
 
-    // Lightbox
     let currentIndex = 0;
     let photos = [];
 
