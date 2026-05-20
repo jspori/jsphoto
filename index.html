@@ -155,7 +155,6 @@
     }
     .portfolio-slider::-webkit-scrollbar { display: none; }
 
-    /* wrapper per foto */
     .slide {
       position: relative;
       flex-shrink: 0;
@@ -430,21 +429,12 @@
   </div>
 
   <script>
-  function goTo(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + page).classList.add('active');
-    document.querySelectorAll('nav a').forEach(a => a.style.textDecoration = 'none');
-    document.querySelectorAll('nav a.active').forEach(a => {
-      a.style.textDecoration = 'underline';
-      a.style.textUnderlineOffset = '5px';
-    });
-    window.scrollTo(0, 0);
-  }
-
-document.querySelectorAll('nav a.active').forEach(a => {
-  a.style.textDecoration = 'underline';
-  a.style.textUnderlineOffset = '5px';
-});
+    function goTo(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+      document.querySelectorAll('nav a').forEach(a => a.style.textDecoration = 'none');
+      window.scrollTo(0, 0);
+    }
 
     const slider = document.getElementById('portfolio-slider');
     document.getElementById('slider-prev').addEventListener('click', () => {
